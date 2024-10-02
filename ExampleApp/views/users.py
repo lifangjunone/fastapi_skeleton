@@ -1,10 +1,11 @@
 from typing import List, Dict, AnyStr, Union
+from ..schemas.users import UsersResponse
 
 
-class UserViewSet:
+class UserInfo:
 
     @staticmethod
-    async def get_users() -> List[Dict[str, Union[AnyStr, int]]]:
+    async def get_users() -> UsersResponse:
         """
         获取用户列表
         :return:
@@ -13,4 +14,4 @@ class UserViewSet:
             {"name": "张三", "email": "18612078527@qq.com"},
             {"name": "李四", "email": "18612078528@qq.com"},
         ]
-        return users
+        return UsersResponse(users=users)

@@ -1,7 +1,5 @@
 from conf.default import config
-from typing import Dict, AnyStr, Union
-from fastapi.encoders import jsonable_encoder
-from ..schemas.server import HealthCheckResponse
+from ..schemas.server import HealthCheckResponse, VersionInfoResponse
 
 class ServerInfo:
     """
@@ -9,15 +7,12 @@ class ServerInfo:
     """
 
     @staticmethod
-    async def get_version() -> Dict[str, AnyStr]:
+    async def get_version() -> VersionInfoResponse:
         """
         获取服务版本
         :return:
         """
-        version = {
-            "version": config.VERSION
-        }
-        return version
+        return VersionInfoResponse(version=config.VERSION)
 
 
     @staticmethod

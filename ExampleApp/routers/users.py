@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from ..views.users import UserViewSet
+from ..apis.users import UsersApi
 
 router = APIRouter()
 
-router.add_api_route("/", UserViewSet.get_users, summary="获取用户列表")
+router.add_api_route("/", UsersApi.get_users, summary="获取用户列表")

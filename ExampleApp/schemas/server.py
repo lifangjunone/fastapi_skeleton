@@ -7,6 +7,13 @@ class ServerBase(BaseModel):
     pass
 
 
+class VersionInfoResponse(ServerBase):
+    """
+    版本信息schema
+    """
+    version: str
+
+
 class HealthCheckResponse(ServerBase):
     """
     检查检查响应schema
