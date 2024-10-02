@@ -1,2 +1,2 @@
-# fastapi_skeleton
+# Fastapi-Skeleton
 fastapi skeleton
