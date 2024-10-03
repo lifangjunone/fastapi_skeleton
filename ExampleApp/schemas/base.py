@@ -21,10 +21,16 @@ class Response(BaseSchema, Generic[T]):
 
 
 class Success(Response):
+    """
+    成功响应
+    """
     msg: str = 'success'
     code: int = 10000
 
 
 class Failure(Response):
+    """
+    失败响应
+    """
     msg: str = 'failure'
     code: int = 10001
