@@ -1,15 +1,15 @@
-from pydantic import BaseModel
+from .base import BaseSchema
 from typing import List
 
 
-class BaseUser(BaseModel):
+class BaseUser(BaseSchema):
     pass
 
 
-class UserResponse(BaseUser):
+class UserResp(BaseUser):
     name: str
     email: str
 
 
-class UsersResponse(BaseUser):
-    users: List[UserResponse]
+class UsersResp(BaseUser):
+    users: List[UserResp]

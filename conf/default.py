@@ -1,4 +1,4 @@
-import os
+from typing import Union
 from pydantic_settings import BaseSettings
 
 
@@ -12,6 +12,11 @@ class DefaultConfig(BaseSettings):
     PORT: int = 8000
     DEBUG: bool = False
     VERSION: str = "0.1.0"
+    DATABASE_TYPE: str = "mysql"
+    ORM_TYPE: str = "relational"
+    RELOAD: bool = True
+    JWT_ALGORITHM: str = 'HS256'
+    JWT_SECRET: Union[str, bytes] = b'a0db6b5f227fe7e4b4ca24eee6547f704ab93e5157786c03'
 
 
     class Config:
@@ -33,24 +38,28 @@ class DevelopmentConfig(DefaultConfig):
     """
     开发环境
     """
-    debug: bool = True
-    RELOAD: bool = True
+
+    class Config:
+        env_file = "conf/.env"
 
 
 class TestConfig(DefaultConfig):
     """
     测试环境
     """
-    TESTING: bool = True
-    RELOAD: bool = True
+
+    class Config:
+        env_file = "conf/.env_test"
 
 
 class ProductionConfig(DefaultConfig):
     """
     生产环境
     """
-    DEBUG: bool = False
-    RELOAD: bool = False
+
+
+    class Config:
+        env_file = "conf/.env_prod"
 
 
 # 配置映射

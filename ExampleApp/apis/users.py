@@ -1,6 +1,9 @@
-from ..views.users import UserInfo
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from ..views.users import UserViewSet
+from ..dependencies.db import get_db
+from ..schemas.users import UsersResp
 from ..schemas.base import Success, Response
-from ..schemas.users import UsersResponse
 
 
 class UsersApi:
@@ -9,9 +12,10 @@ class UsersApi:
     """
 
     @staticmethod
-    async def get_users() -> Response[UsersResponse]:
+    async def get_users(db: Session = Depends(get_db)) -> Response[UsersResp]:
         """
         获取用户信息
+        :param db: Session object
         """
-        users: UsersResponse = await UserInfo.get_users()
+        users: UsersResp = await UserViewSet.get_users(db)
         return Success(data=users)

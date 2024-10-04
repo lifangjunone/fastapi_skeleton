@@ -34,3 +34,7 @@ class Failure(Response):
     """
     msg: str = 'failure'
     code: int = 10001
+
+
+class CommonResp(BaseSchema):
+    is_ok: bool = True

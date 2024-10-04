@@ -1,11 +1,11 @@
-from typing import List, Dict, AnyStr, Union
-from ..schemas.users import UsersResponse
+from ..schemas.users import UsersResp
+from sqlalchemy.orm import Session
 
 
-class UserInfo:
+class UserViewSet:
 
     @staticmethod
-    async def get_users() -> UsersResponse:
+    async def get_users(db: Session) -> UsersResp:
         """
         获取用户列表
         :return:
@@ -14,4 +14,4 @@ class UserInfo:
             {"name": "张三", "email": "18612078527@qq.com"},
             {"name": "李四", "email": "18612078528@qq.com"},
         ]
-        return UsersResponse(users=users)
+        return UsersResp(users=users)

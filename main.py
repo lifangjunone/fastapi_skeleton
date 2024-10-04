@@ -1,6 +1,7 @@
 import uvicorn
-from fastapi import FastAPI
 from conf.default import config
+from fastapi import FastAPI, Depends
+from ExampleApp.models import init_table
 from contextlib import asynccontextmanager
 from common.logger import setup_logger, logger
 from ExampleApp.routers import register_routes
@@ -18,6 +19,10 @@ async def lifespan(app: FastAPI):
     setup_logger()
     # 注册路由
     register_routes(app)
+    # 初始化数据库表
+    if config.DEBUG:
+        logger.info(f"Run server is a debug mode")
+        init_table()
     logger.info(f"Starting {config.PROJECT_NAME}:{config.VERSION} app...")
     yield
     # 应用关闭时执行的代码

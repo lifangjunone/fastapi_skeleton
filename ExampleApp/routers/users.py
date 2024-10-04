@@ -3,4 +3,4 @@ from ..apis.users import UsersApi
 
 router = APIRouter()
 
-router.add_api_route("/", UsersApi.get_users, summary="获取用户列表")
+router.add_api_route("/", UsersApi.get_users, methods=["GET"], summary="获取用户列表")

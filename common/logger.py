@@ -2,12 +2,12 @@ import os
 import sys
 from loguru import logger
 
-# 设置日志文件路径
-log_directory = "logs"
-os.makedirs(log_directory, exist_ok=True)
 
 def setup_logger():
     """设置 loguru 日志配置"""
+    # 设置日志文件路径
+    log_directory = "logs"
+    os.makedirs(log_directory, exist_ok=True)
     logger.remove()  # 移除默认处理器
     # 添加控制台日志处理器（标准输出），启用彩色输出
     logger.add(
