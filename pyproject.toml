@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "fastapi-skeleton"
+version = "0.1.0"
+description = ""
+authors = ["lifangjun"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "0.115.0"
+uvicorn = "0.31.0"
+loguru = "0.7.2"
+pydantic = ">=2.9.2,<2.10.0"
+pydantic-settings = "2.5.2"
+poetry = "1.8.3"
+poetry-add-requirements-txt = "1.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

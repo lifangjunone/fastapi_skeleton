@@ -18,10 +18,10 @@ async def lifespan(app: FastAPI):
     setup_logger()
     # 注册路由
     register_routes(app)
-    logger.info("Starting FastAPI app...")
+    logger.info(f"Starting {config.PROJECT_NAME}:{config.VERSION} app...")
     yield
     # 应用关闭时执行的代码
-    logger.info("Shutting down FastAPI app...")
+    logger.info(f"Shutting down {config.PROJECT_NAME}:{config.VERSION} app...")
 
 
 def create_app() -> FastAPI:

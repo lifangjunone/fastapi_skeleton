@@ -1,16 +1,24 @@
 import os
+from pydantic_settings import BaseSettings
 
 
-class DefaultConfig:
+class DefaultConfig(BaseSettings):
     """
     默认配置
     """
-    ENV = os.getenv('ENV', 'development')
-    PROJECT_NAME = "Fastapi-Skeleton"
-    HOST = os.getenv("HOST", "0.0.0.0")
-    PORT = int(os.getenv("PORT", 8000))
-    DEBUG = False
-    VERSION = os.getenv("VERSION", "0.1.0")
+    ENV: str = 'development'
+    PROJECT_NAME: str = "Fastapi-Skeleton"
+    HOST: str = "0.0.0.0"
+    PORT: int = 8000
+    DEBUG: bool = False
+    VERSION: str = "0.1.0"
+
+
+    class Config:
+        env_file = "conf/.env"
+        env_file_encoding = 'utf-8'
+        case_sensitive = True  # 可选: 确保环境变量大小写敏感
+
 
     @classmethod
     def from_env(cls):
@@ -25,25 +33,24 @@ class DevelopmentConfig(DefaultConfig):
     """
     开发环境
     """
-    debug = True
-    RELOAD = True
+    debug: bool = True
+    RELOAD: bool = True
 
 
 class TestConfig(DefaultConfig):
     """
     测试环境
     """
-    TESTING = True
-    RELOAD = True
+    TESTING: bool = True
+    RELOAD: bool = True
 
 
 class ProductionConfig(DefaultConfig):
     """
     生产环境
     """
-    DEBUG = False
-    RELOAD = False
-
+    DEBUG: bool = False
+    RELOAD: bool = False
 
 
 # 配置映射
@@ -54,4 +61,4 @@ configurations = {
 }
 
 # 根据环境变量选择配置
-config = configurations.get(DefaultConfig.ENV, DefaultConfig).from_env()
+config = configurations.get(DefaultConfig().ENV, DefaultConfig).from_env()

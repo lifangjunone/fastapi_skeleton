@@ -2,3 +2,6 @@ fastapi==0.115.0
 uvicorn==0.31.0
 loguru==0.7.2
 pydantic~=2.9.2
+pydantic-settings==2.5.2
+poetry==1.8.3
+poetry-add-requirements.txt==1.4.0
