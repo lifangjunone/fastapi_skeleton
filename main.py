@@ -5,6 +5,8 @@ from ExampleApp.models import init_table
 from contextlib import asynccontextmanager
 from common.logger import setup_logger, logger
 from ExampleApp.routers import register_routes
+from ExampleApp.middlewares.auth_middleware import TokenValidationMiddleware
+from ExampleApp.middlewares.metrics_middleware import MetricsMiddleware
 
 
 async def print_server_info():
@@ -61,6 +63,14 @@ def create_app() -> FastAPI:
     return app
 
 
+def init_app(app: FastAPI):
+    """
+    初始化
+    """
+    # 注册中间件
+    app.add_middleware(TokenValidationMiddleware)
+    app.add_middleware(MetricsMiddleware)
+
 
 def run_app():
     """
@@ -69,6 +79,7 @@ def run_app():
     """
 
     app: FastAPI = create_app()
+    init_app(app)
     uvicorn.run(app, host=config.HOST, port=config.PORT)
 
 

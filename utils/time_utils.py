@@ -41,6 +41,17 @@ def convert_iso_to_custom_format(iso_time_str: str) -> str:
     return formatted_time
 
 
+def format_datetime(datetime_obj: datetime = None) -> str:
+    """
+    datetime格式化
+    """
+    if not datetime_obj: return ""
+    if isinstance(datetime_obj, datetime):
+        return datetime_obj.strftime('%Y-%m-%d %H:%M:%S')
+    elif isinstance(datetime_obj, str):
+        return datetime_obj
+
+
 if __name__ == '__main__':
     # iso_time_str_ = '2024-10-04T22:37:08.236543+08:00'
     # formatted_time_ = convert_iso_to_custom_format(iso_time_str_)

@@ -2,8 +2,10 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 from ..dependencies.db import get_db
 from ..views.auth import AuthViewSet
-from ..schemas.auth import RegistryReq
-from ..schemas.base import Success, Response, CommonResp
+from ..schemas.auth import RegistryReq, LoginReq, LoginResp
+from ..schemas.base import Success, Response, CommonResp, CustomFailure
+from ExampleApp.exceptions.error_code import ERROR_CODE
+from typing import Union
 
 
 class AuthApi:
@@ -12,12 +14,16 @@ class AuthApi:
     """
 
     @staticmethod
-    async def login(db: Session = Depends(get_db)) -> Response:
+    async def login(login: LoginReq, db: Session = Depends(get_db)) -> Response:
         """
         登录， 返回token
+        :param login: login info object
         :param db: Session object
         """
-        return Success(data={})
+        res: Union[LoginResp, bool] = await AuthViewSet.login(login, db)
+        if not res:
+            return CustomFailure(code=ERROR_CODE.ACCOUNT_OR_PASSWORD_ERROR, msg="账号密码错误")
+        return Success(data=res)
 
 
     @staticmethod
@@ -29,7 +35,7 @@ class AuthApi:
         return Success(data={})
 
     @staticmethod
-    async def register(register: RegistryReq, db: Session = Depends(get_db)) -> Response:
+    async def register(register: RegistryReq, db: Session = Depends(get_db)) -> Response[CustomFailure]:
         """
         注册用户，返回是否成功
         :param db: Session object

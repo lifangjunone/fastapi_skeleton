@@ -1,17 +1,20 @@
-from ..schemas.users import UsersResp
+from typing import List
+from ..views import CommonCRUD
 from sqlalchemy.orm import Session
+from ..schemas.users import UsersResp
+from ExampleApp.models.users import User
+from fastapi.encoders import jsonable_encoder
 
 
-class UserViewSet:
+class UserViewSet(CommonCRUD):
+    model = User
+    default_exclude_fields = ["is_deleted", "password"]
 
-    @staticmethod
-    async def get_users(db: Session) -> UsersResp:
+    @classmethod
+    async def get_users(cls, db: Session) -> UsersResp:
         """
         获取用户列表
         :return:
         """
-        users = [
-            {"name": "张三", "email": "18612078527@qq.com"},
-            {"name": "李四", "email": "18612078528@qq.com"},
-        ]
-        return UsersResp(users=users)
+        users: List = cls.query(db, many=True)
+        return UsersResp(users=jsonable_encoder(users))

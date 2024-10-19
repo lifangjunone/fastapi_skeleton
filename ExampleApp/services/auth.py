@@ -20,11 +20,13 @@ def get_secret(random = 24) -> bytes:
     return binascii.hexlify(os.urandom(random))
 
 
-def sign_jwt(user_id: Union[str, int], username: str = None, expires_in: timedelta = timedelta(minutes=10)) -> Union[str, None]:
+def sign_jwt(user_id: Union[str, int], username: str = None, email: str = None,
+             expires_in: timedelta = timedelta(minutes=10)) -> Union[str, None]:
     """
     生成 JWT 签名
     :param user_id: 用户ID
     :param username: 用户名
+    :param email: 邮箱
     :param expires_in: JWT 过期时间间隔，默认为 10 分钟
     :return: JWT token 或 None
     """
@@ -35,6 +37,7 @@ def sign_jwt(user_id: Union[str, int], username: str = None, expires_in: timedel
     payload = {
         "user_id": str(user_id),
         "username": username or str(user_id),
+        "email": email or str(user_id),
         "expires": expiration.isoformat(),  # 使用 ISO 格式保存时间
         "date_format": convert_iso_to_custom_format(expiration.isoformat())
     }
@@ -92,9 +95,9 @@ def password_hash(password: Any) -> str:
 
 
 if __name__ == '__main__':
-    # token_ = sign_jwt(1)
-    # print(token_)
-    # print(decode_jwt(token_)[1].get("date_format"))
-    ph = password_hash(12345)
-    print(ph)
-    print(verify_password(12345, ph))
+    token = sign_jwt(11, email = "root11")
+    decoded_token = jwt.decode(token, config.JWT_SECRET, algorithms=[config.JWT_ALGORITHM])
+    print(datetime.fromisoformat(decoded_token["expires"]).replace(tzinfo=timezone.utc))
+    # ph = password_hash(123456)
+    # print(ph)
+    # print(verify_password(123456, ph))

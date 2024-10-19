@@ -13,16 +13,36 @@ class RelationalDBOrm(BaseDBOrm):
     """
 
     model = None  # 定义 ORM 模型类，子类应将其设置为对应的模型
+    default_exclude_fields = ['is_delete']
 
     @classmethod
-    def query(cls):
+    def query(cls, db: Session, fields=None, many=False, **filters):
         """
         查询数据的方法。
-        该方法应根据具体的数据库逻辑实现数据查询功能。
+        该方法根据给定的过滤条件查询数据，并根据传递的字段列表决定返回的字段。
+        :param db: session object
+        :param fields: 指定返回的字段列表，默认为 None
+        :param many:  是否返回多条
+        :param filters: 用于查询的过滤条件
         :return: 查询结果
         """
+        query = db.query(cls.model)
+        # 应用过滤条件
+        if filters:
+            query = query.filter_by(**filters)
 
-        pass
+        # 处理字段返回
+        if fields:
+            results = query.with_entities(*[getattr(cls.model, field) for field in fields])
+        else:
+            results = query.with_entities(
+                *[column for column in cls.model.__table__.columns if column.name not in cls.default_exclude_fields]
+            )
+        if many:
+            results = results.all()
+        else:
+            results = results.one_or_none()
+        return cls.map_to_model(results)
 
     @classmethod
     def save(cls, db: Session, **kwargs):
