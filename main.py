@@ -7,6 +7,20 @@ from common.logger import setup_logger, logger
 from ExampleApp.routers import register_routes
 
 
+async def print_server_info():
+    """
+    打印服务信息
+    """
+    logger.info(f"Server version: {config.VERSION}")
+    logger.info(f"Server API prefix: {config.API.API_PREFIX}")
+    logger.info(f"Server API prefix version: {config.API.NUMBER}")
+    logger.info(f"Server logging level: {config.LOGGING_LEVEL}")
+    logger.info(f"Server address: {config.PROTOCOL}://{config.HOST}:{config.PORT}")
+    logger.info(f"Server Docs address: {config.PROTOCOL}://{config.HOST}:{config.PORT}/{config.DOCS_URL}")
+    logger.info(f"Server Redoc address: {config.PROTOCOL}://{config.HOST}:{config.PORT}/{config.REDOC_URL}")
+
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
@@ -22,6 +36,7 @@ async def lifespan(app: FastAPI):
     # 初始化数据库表
     if config.DEBUG:
         logger.info(f"Run server is a debug mode")
+        await print_server_info()
         init_table()
     logger.info(f"Starting {config.PROJECT_NAME}:{config.VERSION} app...")
     yield
@@ -39,6 +54,9 @@ def create_app() -> FastAPI:
         title=config.PROJECT_NAME,
         version=config.VERSION,
         reload=config.RELOAD,
+        docs_url=config.DOCS_URL,
+        redoc_url=config.REDOC_URL,
+        openapi_url=config.OPENAPI_URL,
     )
     return app
 

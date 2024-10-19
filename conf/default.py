@@ -10,13 +10,23 @@ class DefaultConfig(BaseSettings):
     PROJECT_NAME: str = "Fastapi-Skeleton"
     HOST: str = "0.0.0.0"
     PORT: int = 8000
+    PROTOCOL: str = "http"
     DEBUG: bool = False
     VERSION: str = "0.1.0"
     DATABASE_TYPE: str = "mysql"
     ORM_TYPE: str = "relational"
     RELOAD: bool = True
+    class API:
+        API_PREFIX: str = "/api/"
+        NUMBER = "v1"
+
+    OPENAPI_URL: str = f"{API.API_PREFIX}{API.NUMBER}/openapi.json"
+    DOCS_URL: str = f"{API.API_PREFIX}{API.NUMBER}/docs"
+    REDOC_URL: str = f"{API.API_PREFIX}{API.NUMBER}/redoc"
     JWT_ALGORITHM: str = 'HS256'
     JWT_SECRET: Union[str, bytes] = b'a0db6b5f227fe7e4b4ca24eee6547f704ab93e5157786c03'
+
+    LOGGING_LEVEL: str = "INFO"
 
 
     class Config:

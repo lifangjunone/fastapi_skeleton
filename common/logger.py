@@ -1,6 +1,7 @@
 import os
 import sys
 from loguru import logger
+from conf.default import config
 
 
 def setup_logger():
@@ -15,6 +16,7 @@ def setup_logger():
         colorize=True,  # 启用彩色日志输出
         format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> <level>{message}</level>",
         enqueue=True,  # 确保线程安全
+        level=config.LOGGING_LEVEL
     )
 
     # 添加控制台日志处理器（标准错误），启用彩色输出
@@ -33,5 +35,6 @@ def setup_logger():
         format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> <level>{message}</level>",  # 日志格式
         enqueue=True,  # 多线程环境下的安全性
         backtrace=True,  # 启用回溯
-        diagnose=True  # 启用诊断信息
+        diagnose=True,  # 启用诊断信息
+        level=config.LOGGING_LEVEL,
     )
